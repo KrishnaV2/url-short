@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors"
 import dotenv from "dotenv"
+import { nanoid } from "nanoid";
 import URL from "./db.js"
 
 const app = express();
@@ -18,13 +19,30 @@ mongoose.connect(process.env.MONGO_URI).then(() => console.log("Connected to DB"
 
 app.post('/api/v1/url', postURL)
 app.get('/api/v1/url/:urlId', getURL)
+async function retryUrlId() {
+    const MAX_TRY = 5;
+    let i = 0;
+    isUnique = false;
+    let urlId = null;
+    while (!isUnique && i < MAX_TRY) {
+        i++;
+        urlId = nanoid(7);
+        const url = await URL.findOne({ urlId });
+        if (!url) isUnique = true;
+    }
+    return isUnique ? urlId : null;
+}
 async function postURL(req, res) {
     try {
         const { url } = req.body;
         if (!url) return res.status(400).json({ "status": "fail", "message": "URL is missing" });
         let data = await URL.findOne({ url });
         if (data) return res.status(200).json({ "status": "success", "id": data.urlId });
-        data = await URL.create({ url });
+        let urlId = nanoid(7);
+        data = await URL.findOne({ urlId });
+        if (data) urlId = await retryUrlId();
+        if (!urlId) return res.status(400).json({ "status": "fail", "message": "Could not generate an ID. Try Again." });
+        data = await URL.create({ url, urlId });
         if (!data) return res.status(200).json({ "status": "fail", "message": "URL could not be created. Try Again." });
         return res.status(200).json({ "status": "success", "id": data.urlId });
     } catch (err) {

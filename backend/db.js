@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import { nanoid } from "nanoid";
 
 const URLSchema = new mongoose.Schema({
     url: {
@@ -8,7 +7,7 @@ const URLSchema = new mongoose.Schema({
     },
     urlId: {
         type: String,
-        default: nanoid(7),
+        required: [true, "URL ID is required to redirect to it."],
         unique: true
     }
 })
