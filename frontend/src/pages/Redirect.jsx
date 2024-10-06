@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 export default function Redirect() {
     const location = useLocation()
     const id = location.pathname.split('/')[1].split('?')[0];
-    const navigate = useNavigate();
     const { isPending, isSuccess, data } = useQuery({
         queryKey: ['getURL'],
         queryFn: getOriginalURL,
@@ -16,9 +15,7 @@ export default function Redirect() {
                 "Content-Type": "application/json"
             }
         });
-        const dat = await res.json();
-        // console.log(dat)
-        return dat;
+        return await res.json();
     }
     if (isSuccess) {
         console.log(data)

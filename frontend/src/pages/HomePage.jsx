@@ -19,15 +19,12 @@ export default function HomePage() {
                 url
             })
         });
-        const dat = await res.json();
-        // console.log(dat)
-        return dat;
+        return await res.json();
     }
     function copyToClipboard(e) {
         navigator.clipboard.writeText(e.target.textContent);
     }
     if (isSuccess) {
-        console.log(data)
         FE_URL += `/${data.id}`
     }
     return (
