@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: "",
+    origin: `${process.env.FE_URL}`,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
 app.options('*', cors())
