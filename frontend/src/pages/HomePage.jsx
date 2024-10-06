@@ -32,7 +32,7 @@ export default function HomePage() {
     }
     return (
         <div className='bg-gray-300 h-screen flex flex-col items-center'>
-            <div className='pt-64 border *:my-2'>
+            <div className='pt-64 *:my-2'>
                 <div className='text-2xl font-medium'>Enter URL to shorten it</div>
                 <input type='url' placeholder='URL' onChange={(e) => setUrl(e.target.value)} className='py-5 px-7 text-xl sm:w-[30rem]' />
                 <div className='bg-blue-300 p-2 w-[12rem] mx-auto text-center hover:bg-blue-400 cursor-pointer' onClick={refetch}>Shorten URL</div>
