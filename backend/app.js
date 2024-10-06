@@ -8,14 +8,16 @@ import URL from "./db.js"
 const app = express();
 
 app.use(express.json());
+
+dotenv.config({ path: "./.env.local" })
+mongoose.connect(process.env.MONGO_URI).then(() => console.log("Connected to DB"))
+
 app.use(cors({
     origin: `${process.env.FE_URL}`,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
 app.options('*', cors())
 
-dotenv.config({ path: "./.env.local" })
-mongoose.connect(process.env.MONGO_URI).then(() => console.log("Connected to DB"))
 
 app.post('/api/v1/url', postURL)
 app.get('/api/v1/url/:urlId', getURL)
